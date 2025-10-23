@@ -1,0 +1,5 @@
+[tool.yardstiq]
+local_plugins = [
+    "my_custom_sim.py",
+    "benchmarks/my_vqe_impl.py"
+]

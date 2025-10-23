@@ -1,0 +1,10 @@
+{
+  "scaleway-qpu": {
+    "package_name": "yardstiq-scaleway",
+    "description": "Provider QPU pour Scaleway QaaS (Quandela, Pasqal...)"
+  },
+  "aqora-dataset": {
+    "package_name": "yardstiq-aqora",
+    "description": "Datasets de problèmes d'optimisation par Aqora"
+  }
+}
