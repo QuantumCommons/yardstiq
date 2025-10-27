@@ -4,7 +4,7 @@ from typing import List
 from pathlib import Path
 from typing_extensions import Annotated
 
-from . import benchmark_cli, provider_cli, qpu_cli, dataset_cli
+from . import backend_cli, benchmark_cli, provider_cli, dataset_cli
 
 from ..core.plugins import load_all_plugins
 
@@ -28,7 +28,7 @@ app = typer.Typer(
 
 app.add_typer(benchmark_cli.app, name="benchmark")
 app.add_typer(provider_cli.app, name="provider")
-app.add_typer(qpu_cli.app, name="qpu")
+app.add_typer(backend_cli.app, name="backend")
 app.add_typer(dataset_cli.app, name="dataset")
 
 

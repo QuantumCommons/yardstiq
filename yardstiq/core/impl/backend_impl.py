@@ -1,10 +1,10 @@
 from typing import List
 
-from ..interfaces.provider import BackendProvider
+from ..interfaces import BackendProvider, Backend
 from ..plugins import PROVIDER_REGISTRY
 
 
-def list_available_backends() -> List[str]:
+def list_available_backends() -> List[Backend]:
     """Returns a list of all discoverable QPU names."""
     backends = []
 

@@ -5,7 +5,7 @@ from ..objects import BackendRunResult, ComputationalModel
 
 
 class Backend(ABC):
-    def __init__(self, provider: "Provider"):
+    def __init__(self, provider):
         self._provider = provider
 
     @abstractmethod

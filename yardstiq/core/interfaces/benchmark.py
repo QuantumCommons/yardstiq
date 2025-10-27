@@ -7,7 +7,7 @@ from ..objects import ComputationalModel, BenchmarkRunResult, BackendRunResult
 
 
 class Benchmark(ABC):
-    def __init__(self, provider: "Provider"):
+    def __init__(self, provider):
         self._provider = provider
 
     @abstractmethod
