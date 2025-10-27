@@ -3,8 +3,8 @@ from typing import Any, Dict
 
 
 class Benchmark(ABC):
-    def __init__(self, config: Dict[str, Any]):
-        self.config = config
+    def __init__(self):
+        pass
 
     @abstractmethod
     def build_circuit(self, dataset: Any) -> Any:

@@ -18,7 +18,9 @@ def _parse_full_name(full_name: str) -> Tuple[str, str]:
         raise ValueError(
             f"Invalid name format: '{full_name}'. Expected 'provider/resource'."
         )
+
     provider_name, resource_name = full_name.split("/", 1)
+
     return provider_name, resource_name
 
 
@@ -26,6 +28,7 @@ def _get_qpu_instance(full_qpu_name: str, config: Dict) -> QPU:
     provider_name, qpu_name = _parse_full_name(full_qpu_name)
 
     provider_instance = PROVIDER_REGISTRY.get(provider_name)
+
     if not provider_instance:
         raise KeyError(f"QPU provider not found: '{provider_name}'")
     if not isinstance(provider_instance, QpuProvider):

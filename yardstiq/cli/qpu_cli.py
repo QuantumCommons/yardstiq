@@ -1,4 +1,5 @@
 import typer
+
 from ..core.impl import qpu_impl
 
 app = typer.Typer(

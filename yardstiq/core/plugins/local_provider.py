@@ -1,4 +1,4 @@
-from typing import Dict, Type
+from typing import Dict, Type, List
 
 from ..interfaces import (
     QPU,
@@ -17,46 +17,45 @@ class LocalProvider(QpuProvider, BenchmarkProvider, DatasetProvider):
     """
 
     def __init__(self):
-        super().__init__()
-        self.name = "local"
+        super().__init__(name="local")
 
         # Internal registries for locally-defined classes
-        self.qpu_registry: Dict[str, Type[QPU]] = {}
-        self.benchmark_registry: Dict[str, Type[Benchmark]] = {}
-        self.dataset_registry: Dict[str, Type[Dataset]] = {}
+        self.__qpus: Dict[str, Type[QPU]] = {}
+        self.__benchmarks: Dict[str, Type[Benchmark]] = {}
+        self.__datasets: Dict[str, Type[Dataset]] = {}
 
-    # --- QpuProvider Implementation ---
-    def list_qpus(self) -> list[str]:
-        return list(self.qpu_registry.keys())
+    def add_qpu(self, qpu: QPU, name: str):
+        self.__qpus[name] = qpu
 
-    def get_qpu(self, qpu_name: str, config: Dict) -> QPU:
+    def list_qpus(self) -> List[QPU]:
+        return list(self.__qpus.keys())
+
+    def get_qpu(self, name: str) -> QPU:
         try:
-            QpuCls = self.qpu_registry[qpu_name]
-            return QpuCls(config)
+            return self.__qpus[name]
         except KeyError:
-            raise KeyError(f"Local QPU '{qpu_name}' not found.")
+            raise KeyError(f"Local QPU '{name}' not found.")
 
-    # --- BenchmarkProvider Implementation ---
-    def list_benchmarks(self) -> list[str]:
-        return list(self.benchmark_registry.keys())
+    def add_benchmark(self, benchmark: Benchmark, name: str):
+        self.__benchmarks[name] = benchmark
 
-    def get_benchmark(self, benchmark_name: str, config: Dict) -> Benchmark:
+    def list_benchmarks(self) -> List[str]:
+        return list(self.__benchmarks.keys())
+
+    def get_benchmark(self, name: str) -> Benchmark:
         try:
-            BenchmarkCls = self.benchmark_registry[benchmark_name]
-            return BenchmarkCls(config)
+            return self.__benchmarks[name]
         except KeyError:
-            raise KeyError(f"Local benchmark '{benchmark_name}' not found.")
+            raise KeyError(f"Local benchmark '{name}' not found.")
 
-    # --- DatasetProvider Implementation ---
-    def list_datasets(self) -> list[str]:
-        return list(self.dataset_registry.keys())
+    def add_dataset(self, dataset: Dataset, name: str):
+        self.__datasets[name] = dataset
 
-    def get_dataset(self, dataset_name: str, config: Dict) -> Dataset:
+    def list_datasets(self) -> List[str]:
+        return list(self.__datasets.keys())
+
+    def get_dataset(self, name: str) -> Dataset:
         try:
-            DatasetCls = self.dataset_registry[dataset_name]
-            return DatasetCls(config)
+            return self.__datasets[name]
         except KeyError:
-            raise KeyError(f"Local dataset '{dataset_name}' not found.")
-
-
-local_provider_instance = LocalProvider()
+            raise KeyError(f"Local dataset '{name}' not found.")
