@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict
+from typing import Any, Dict, Optional
+
+from .dataset import Dataset
 
 
 class Benchmark(ABC):
@@ -7,7 +9,7 @@ class Benchmark(ABC):
         pass
 
     @abstractmethod
-    def build_circuit(self, dataset: Any) -> Any:
+    def build_circuit(self, dataset: Optional[Dataset]) -> Any:
         pass
 
     @abstractmethod

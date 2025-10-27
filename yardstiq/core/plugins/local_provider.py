@@ -50,12 +50,3 @@ class LocalProvider(QpuProvider, BenchmarkProvider, DatasetProvider):
 
     def add_dataset(self, dataset: Dataset, name: str):
         self.__datasets[name] = dataset
-
-    def list_datasets(self) -> List[str]:
-        return list(self.__datasets.keys())
-
-    def get_dataset(self, name: str) -> Dataset:
-        try:
-            return self.__datasets[name]
-        except KeyError:
-            raise KeyError(f"Local dataset '{name}' not found.")

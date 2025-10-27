@@ -6,7 +6,7 @@ import importlib.resources
 from typing import Dict, Any
 
 
-def list_knwon_providers() -> Dict[str, Any]:
+def list_known_providers() -> Dict[str, Any]:
     """Loads and returns the known provider catalog."""
     try:
         catalog_file = importlib.resources.files("yardstiq").joinpath(
@@ -21,7 +21,7 @@ def list_knwon_providers() -> Dict[str, Any]:
 
 def _get_package_name_from_catalog(provider_name: str) -> str:
     """Finds the PyPI package name from the provider shortcut name."""
-    catalog = list_knwon_providers()
+    catalog = list_known_providers()
 
     if provider_name not in catalog:
         raise KeyError(f"Provider '{provider_name}' not found in catalog.")

@@ -24,9 +24,8 @@ def _parse_full_name(full_name: str) -> Tuple[str, str]:
     return provider_name, resource_name
 
 
-def _get_qpu_instance(full_qpu_name: str, config: Dict) -> QPU:
+def _get_qpu_instance(full_qpu_name: str) -> QPU:
     provider_name, qpu_name = _parse_full_name(full_qpu_name)
-
     provider_instance = PROVIDER_REGISTRY.get(provider_name)
 
     if not provider_instance:
@@ -34,10 +33,10 @@ def _get_qpu_instance(full_qpu_name: str, config: Dict) -> QPU:
     if not isinstance(provider_instance, QpuProvider):
         raise TypeError(f"Provider '{provider_name}' is not a QpuProvider.")
 
-    return provider_instance.get_qpu(qpu_name, config)
+    return provider_instance.get_qpu(qpu_name)
 
 
-def _get_dataset_instance(full_dataset_name: str, config: Dict) -> Dataset:
+def _get_dataset_instance(full_dataset_name: str) -> Dataset:
     provider_name, dataset_name = _parse_full_name(full_dataset_name)
     provider_instance = PROVIDER_REGISTRY.get(provider_name)
 
@@ -46,10 +45,10 @@ def _get_dataset_instance(full_dataset_name: str, config: Dict) -> Dataset:
     if not isinstance(provider_instance, DatasetProvider):
         raise TypeError(f"Provider '{provider_name}' is not a DatasetProvider.")
 
-    return provider_instance.get_dataset(dataset_name, config)
+    return provider_instance.get_dataset(dataset_name)
 
 
-def _get_benchmark_instance(full_benchmark_name: str, config: Dict) -> Benchmark:
+def _get_benchmark_instance(full_benchmark_name: str) -> Benchmark:
     provider_name, benchmark_name = _parse_full_name(full_benchmark_name)
     provider_instance = PROVIDER_REGISTRY.get(provider_name)
 
@@ -58,7 +57,7 @@ def _get_benchmark_instance(full_benchmark_name: str, config: Dict) -> Benchmark
     if not isinstance(provider_instance, BenchmarkProvider):
         raise TypeError(f"Provider '{provider_name}' is not a BenchmarkProvider.")
 
-    return provider_instance.get_benchmark(benchmark_name, config)
+    return provider_instance.get_benchmark(benchmark_name)
 
 
 def run_benchmark(
@@ -74,16 +73,14 @@ def run_benchmark(
     except json.JSONDecodeError:
         raise ValueError(f"Invalid JSON parameters: {params_json}")
 
-    benchmark = _get_benchmark_instance(benchmark_name, config)
-    qpu = _get_qpu_instance(qpu_name, config)
-
-    dataset_obj = None
+    benchmark = _get_benchmark_instance(benchmark_name)
+    qpu = _get_qpu_instance(qpu_name)
 
     if dataset_name:
-        dataset = _get_dataset_instance(dataset_name, config)
-        dataset_obj = dataset.load()
+        dataset = _get_dataset_instance(dataset_name)
+        dataset.load()
 
-    circuit = benchmark.build_circuit(dataset_obj)
+    circuit = benchmark.build_circuit(dataset=dataset)
     results = qpu.execute(circuit=circuit, shots=config.get("shots", 1024))
     score = benchmark.score(results)
 

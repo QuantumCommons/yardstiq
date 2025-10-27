@@ -35,7 +35,7 @@ class QpuProvider(Provider):
     def get_qpu(self, name: str) -> QPU:
         """
         Returns an instantiated QPU object for the given name.
-        'qpu_name' is one of the names from list_qpus().
+        'name' is one of the names from list_qpus().
         """
         pass
 

@@ -9,6 +9,7 @@ def load_installed_plugins():
     The decorators (@provider) in the loaded files will register themselves.
     """
     print("[Yardstiq] Loading installed plugins (entry_points)...")
+
     try:
         discovered_entry_points = entry_points(group=PLUGIN_ENTRY_POINT_GROUP)
     except Exception as e:

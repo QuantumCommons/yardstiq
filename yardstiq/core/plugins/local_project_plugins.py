@@ -6,10 +6,12 @@ from .local_manual_plugins import load_local_plugin
 
 def find_config_file() -> Path | None:
     current_dir = Path.cwd()
+
     for parent in [current_dir] + list(current_dir.parents):
         config_path = parent / "pyproject.toml"
         if config_path.exists():
             return config_path
+
     return None
 
 
