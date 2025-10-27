@@ -9,4 +9,3 @@ class BenchmarkRunResult:
     benchmark_name: str
     qpu_name: str
     scores: Dict[str, float]
-    details: Dict[str, Any]

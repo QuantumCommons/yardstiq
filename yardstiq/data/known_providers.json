@@ -1,10 +1,14 @@
 {
-  "scaleway-qpu": {
+  "yardstiq-default": {
+    "package_name": "yardstiq-default",
+    "description": "Default implementations of Yardstiq components (Aer simulator, default backends...)"
+  },
+  "scaleway-backend": {
     "package_name": "yardstiq-scaleway",
-    "description": "Provider QPU pour Scaleway QaaS (Quandela, Pasqal...)"
+    "description": "Provider implementation for Scaleway backends (Quandela, Pasqal, IQM...)"
   },
   "aqora-dataset": {
     "package_name": "yardstiq-aqora",
-    "description": "Datasets de problèmes d'optimisation par Aqora"
+    "description": "Provider implementatin by Aqora for quantum computing datasets."
   }
 }
