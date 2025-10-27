@@ -2,10 +2,10 @@ import json
 
 from typing import Dict, Any, Optional, Tuple
 from ..interfaces import (
-    QPU,
+    Backend,
     Benchmark,
     Dataset,
-    QpuProvider,
+    BackendProvider,
     DatasetProvider,
     BenchmarkProvider,
 )
@@ -24,16 +24,16 @@ def _parse_full_name(full_name: str) -> Tuple[str, str]:
     return provider_name, resource_name
 
 
-def _get_qpu_instance(full_qpu_name: str) -> QPU:
-    provider_name, qpu_name = _parse_full_name(full_qpu_name)
+def _get_backend_instance(full_backend_name: str) -> Backend:
+    provider_name, backend_name = _parse_full_name(full_backend_name)
     provider_instance = PROVIDER_REGISTRY.get(provider_name)
 
     if not provider_instance:
-        raise KeyError(f"QPU provider not found: '{provider_name}'")
-    if not isinstance(provider_instance, QpuProvider):
-        raise TypeError(f"Provider '{provider_name}' is not a QpuProvider.")
+        raise KeyError(f"Backend provider not found: '{provider_name}'")
+    if not isinstance(provider_instance, BackendProvider):
+        raise TypeError(f"Provider '{provider_name}' is not a BackendProvider.")
 
-    return provider_instance.get_qpu(qpu_name)
+    return provider_instance.get_backend(backend_name)
 
 
 def _get_dataset_instance(full_dataset_name: str) -> Dataset:
@@ -61,7 +61,10 @@ def _get_benchmark_instance(full_benchmark_name: str) -> Benchmark:
 
 
 def run_benchmark(
-    benchmark_name: str, qpu_name: str, dataset_name: Optional[str], params_json: str
+    benchmark_name: str,
+    backend_name: str,
+    dataset_name: Optional[str],
+    params_json: str,
 ) -> Dict[str, Any]:
     """
     Core implementation for running a benchmark.
@@ -74,14 +77,14 @@ def run_benchmark(
         raise ValueError(f"Invalid JSON parameters: {params_json}")
 
     benchmark = _get_benchmark_instance(benchmark_name)
-    qpu = _get_qpu_instance(qpu_name)
+    backend = _get_backend_instance(backend_name)
 
     if dataset_name:
         dataset = _get_dataset_instance(dataset_name)
         dataset.load()
 
-    circuit = benchmark.build_circuit(dataset=dataset)
-    results = qpu.execute(circuit=circuit, shots=config.get("shots", 1024))
+    model = benchmark.build_model(dataset=dataset)
+    results = backend.run(model=model, shots=config.get("shots", 1024))
     score = benchmark.score(results)
 
     return score

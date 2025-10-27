@@ -1,16 +1,16 @@
 from typing import Dict, Type, List
 
 from ..interfaces import (
-    QPU,
+    Backend,
     Benchmark,
     Dataset,
-    QpuProvider,
+    BackendProvider,
     BenchmarkProvider,
     DatasetProvider,
 )
 
 
-class LocalProvider(QpuProvider, BenchmarkProvider, DatasetProvider):
+class LocalProvider(BackendProvider, BenchmarkProvider, DatasetProvider):
     """
     A built-in singleton provider that holds all implementations
     loaded from local files (via --load or pyproject.toml).
@@ -20,21 +20,21 @@ class LocalProvider(QpuProvider, BenchmarkProvider, DatasetProvider):
         super().__init__(name="local")
 
         # Internal registries for locally-defined classes
-        self.__qpus: Dict[str, Type[QPU]] = {}
+        self.__backends: Dict[str, Type[Backend]] = {}
         self.__benchmarks: Dict[str, Type[Benchmark]] = {}
         self.__datasets: Dict[str, Type[Dataset]] = {}
 
-    def add_qpu(self, qpu: QPU, name: str):
-        self.__qpus[name] = qpu
+    def add_backend(self, backend: Backend, name: str):
+        self.__backends[name] = backend
 
-    def list_qpus(self) -> List[QPU]:
-        return list(self.__qpus.keys())
+    def list_backends(self) -> List[Backend]:
+        return list(self.__backends.keys())
 
-    def get_qpu(self, name: str) -> QPU:
+    def get_backend(self, name: str) -> Backend:
         try:
-            return self.__qpus[name]
+            return self.__backends[name]
         except KeyError:
-            raise KeyError(f"Local QPU '{name}' not found.")
+            raise KeyError(f"Local backend '{name}' not found.")
 
     def add_benchmark(self, benchmark: Benchmark, name: str):
         self.__benchmarks[name] = benchmark

@@ -3,13 +3,13 @@ from typing import List
 
 from .dataset import Dataset
 from .benchmark import Benchmark
-from .qpu import QPU
+from .backend import Backend
 
 
 class Provider(ABC):
     """
     Base interface for all resource providers.
-    A provider is a factory for resources (QPUs, Datasets, etc.).
+    A provider is a factory for resources (backends, Datasets, etc.).
     """
 
     def __init__(self, name: str = ""):
@@ -20,22 +20,22 @@ class Provider(ABC):
         return f"{self.__name}/{resource_name}"
 
 
-class QpuProvider(Provider):
-    """Interface for a provider that can discover and instantiate QPUs."""
+class BackendProvider(Provider):
+    """Interface for a provider that can discover and instantiate backends."""
 
     @abstractmethod
-    def list_qpus(self) -> List[QPU]:
+    def list_backends(self) -> List[Backend]:
         """
-        Returns a list of available QPU names this provider offers.
+        Returns a list of available backend names this provider offers.
         e.g., ["quandela-ascella", "pasqal-fresnel"]
         """
         pass
 
     @abstractmethod
-    def get_qpu(self, name: str) -> QPU:
+    def get_backend(self, name: str) -> Backend:
         """
-        Returns an instantiated QPU object for the given name.
-        'name' is one of the names from list_qpus().
+        Returns an instantiated backend object for the given name.
+        'name' is one of the names from list_backends().
         """
         pass
 

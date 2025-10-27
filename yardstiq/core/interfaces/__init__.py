@@ -1,4 +1,4 @@
 from .benchmark import Benchmark
 from .dataset import Dataset
-from .qpu import QPU
-from .provider import Provider, QpuProvider, DatasetProvider, BenchmarkProvider
+from .backend import Backend
+from .provider import Provider, BackendProvider, DatasetProvider, BenchmarkProvider
