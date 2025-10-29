@@ -4,7 +4,7 @@ from enum import Enum
 
 
 class ModelSerializationFormat(Enum):
-    UNKOWN_CIRCUIT_SERIALIZATION = 0
+    UNKOWN_SERIALIZATION = 0
     QASM_V1 = 1
     QASM_V2 = 2
     QASM_V3 = 3
@@ -46,7 +46,7 @@ class ComputationalModel:
         if self.serialization_format in [
             ModelSerializationFormat.CIRQ_JSON_V1,
         ]:
-            from cirq import Circuit, read_json
+            from cirq import read_json
 
             return read_json(json_text=self.serialization)
 
