@@ -29,3 +29,6 @@ ys = "yardstiq.cli.main_cli:app"
 
 [project.urls]
 Repository = "https://github.com/QuantumCommons/yardstiq"
+
+[tool.setuptools.package-data]
+yardstiq = ["data/known_providers.json"]

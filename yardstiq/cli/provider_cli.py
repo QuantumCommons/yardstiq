@@ -55,13 +55,13 @@ def remove_provider(
         raise typer.Exit(code=1)
 
 
-@app.command("list")
+@app.command("ls")
 def list_providers():
     """Lists all official providers from the catalog."""
 
     typer.echo("Known provider catalog:")
 
-    catalog = provider_impl.list_knwon_providers()
+    catalog = provider_impl.list_known_providers()
 
     if not catalog:
         typer.echo("  Catalog is empty or could not be loaded.")

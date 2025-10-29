@@ -1,0 +1,1 @@
+[See Scaleway provider plugin implementation](https://github.com/scaleway/yardstiq-scaleway)

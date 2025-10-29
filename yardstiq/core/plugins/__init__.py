@@ -10,8 +10,6 @@ from .local_manual_plugins import load_local_plugin
 
 PROVIDER_REGISTRY: Dict[str, Provider] = {"local": LocalProvider()}
 
-_plugins_loaded = False
-
 
 def provider(name: str) -> Callable:
     """
@@ -90,6 +88,9 @@ def dataset(name: str) -> Callable:
         return cls
 
     return decorator
+
+
+_plugins_loaded = False
 
 
 def load_all_plugins(local_files: List[Path] = None):

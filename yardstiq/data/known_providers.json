@@ -1,7 +1,7 @@
 {
-  "yardstiq-default": {
-    "package_name": "yardstiq-default",
-    "description": "Default implementations of Yardstiq components (Aer simulator, default backends...)"
+  "yardstiq-compass": {
+    "package_name": "yardstiq-compass",
+    "description": "Diverse implementations of default Yardstiq components (Qiskit's Aer backend, simple benchmarks...)"
   },
   "scaleway-backend": {
     "package_name": "yardstiq-scaleway",
