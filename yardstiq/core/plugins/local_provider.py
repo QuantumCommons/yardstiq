@@ -39,7 +39,7 @@ class LocalProvider(BackendProvider, BenchmarkProvider, DatasetProvider):
     def add_benchmark(self, benchmark: Benchmark, name: str):
         self.__benchmarks[name] = benchmark
 
-    def list_benchmarks(self) -> List[str]:
+    def list_benchmarks(self) -> List[Benchmark]:
         return list(self.__benchmarks.keys())
 
     def get_benchmark(self, name: str) -> Benchmark:
@@ -50,3 +50,12 @@ class LocalProvider(BackendProvider, BenchmarkProvider, DatasetProvider):
 
     def add_dataset(self, dataset: Dataset, name: str):
         self.__datasets[name] = dataset
+
+    def list_datasets(self) -> List[Dataset]:
+        return list(self.__datasets.keys())
+
+    def get_dataset(self, name: str) -> Dataset:
+        try:
+            return self.__datasets[name]
+        except KeyError:
+            raise KeyError(f"Local dataset '{name}' not found.")

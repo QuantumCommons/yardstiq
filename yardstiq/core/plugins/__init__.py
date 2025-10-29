@@ -1,7 +1,7 @@
 from typing import Dict, Type, Callable, List
 from pathlib import Path
 
-from ..interfaces import Provider, QPU, Benchmark, Dataset
+from ..interfaces import Provider, Backend, Benchmark, Dataset
 
 from .local_provider import LocalProvider
 from .installed_plugins import load_installed_plugins
@@ -16,7 +16,7 @@ _plugins_loaded = False
 def provider(name: str) -> Callable:
     """
     DECORATOR (for packages): Registers a new Provider class.
-    Used by external packages like 'yardstiq-scaleway-qpu'.
+    Used by external packages like 'yardstiq-scaleway', 'yardstiq-aqora' or 'yardstiq-quandela'.
     """
 
     def decorator(cls: Type[Provider]) -> Type[Provider]:
@@ -38,17 +38,18 @@ def provider(name: str) -> Callable:
     return decorator
 
 
-def qpu(name: str) -> Callable:
+def backend(name: str) -> Callable:
     """
-    DECORATOR (for local files): Registers a QPU class
+    DECORATOR (for local files): Registers a Backend class
     with the implicit 'local' provider.
     """
 
-    def decorator(cls: Type[QPU]) -> Type[QPU]:
-        if not issubclass(cls, QPU):
-            raise TypeError(f"Class {cls.__name__} must inherit from QPU")
+    def decorator(cls: Type[Backend]) -> Type[Backend]:
+        if not issubclass(cls, Backend):
+            raise TypeError(f"Class {cls.__name__} must inherit from Backend")
 
-        PROVIDER_REGISTRY["local"].add_qpu(cls(), name)
+        localp: LocalProvider = PROVIDER_REGISTRY["local"]
+        localp.add_backend(cls(), name)
 
         return cls
 
@@ -65,7 +66,8 @@ def benchmark(name: str) -> Callable:
         if not issubclass(cls, Benchmark):
             raise TypeError(f"Class {cls.__name__} must inherit from Benchmark")
 
-        PROVIDER_REGISTRY["local"].add_benchmark(cls(), name)
+        localp: LocalProvider = PROVIDER_REGISTRY["local"]
+        localp.add_benchmark(cls(), name)
 
         return cls
 
@@ -82,7 +84,8 @@ def dataset(name: str) -> Callable:
         if not issubclass(cls, Dataset):
             raise TypeError(f"Class {cls.__name__} must inherit from Dataset")
 
-        PROVIDER_REGISTRY["local"].add_dataset(cls(), name)
+        localp: LocalProvider = PROVIDER_REGISTRY["local"]
+        localp.add_dataset(cls(), name)
 
         return cls
 
