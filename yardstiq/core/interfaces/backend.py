@@ -1,7 +1,21 @@
+# Copyright 2025 Scaleway, Aqora, Quantum Commons
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 from abc import ABC, abstractmethod
 from enum import Enum
+from typing import Union, List
 
-from ..objects import BackendRunResult, ComputationalModel
+from qami import QuantumProgram, QuantumProgramResult
 
 
 class BackendAvailability(Enum):
@@ -12,9 +26,10 @@ class BackendAvailability(Enum):
 
 
 class Backend(ABC):
-    def __init__(self, provider, name: str, **kwargs):
+    def __init__(self, provider, name: str, version: str, **kwargs):
         self.__provider = provider
         self.__name = name
+        self.__version = version
         self.__additional_properties = kwargs
 
     def __enter__(self):
@@ -26,16 +41,16 @@ class Backend(ABC):
         self.deallocate()
         return False
 
-    @abstractmethod
     def allocate(**kwargs) -> None:
         pass
 
-    @abstractmethod
     def deallocate() -> None:
         pass
 
     @abstractmethod
-    def run(self, model: ComputationalModel, shots: int, **kwargs) -> BackendRunResult:
+    def run(
+        self, program: Union[QuantumProgram, List[QuantumProgram]], shots: int, **kwargs
+    ) -> List[QuantumProgramResult]:
         pass
 
     @property
@@ -46,17 +61,18 @@ class Backend(ABC):
     def name(self) -> str:
         return self.__name
 
-    @abstractmethod
+    @property
+    def version(self) -> str:
+        return self.__version
+
     @property
     def max_qubit_count(self) -> int:
         pass
 
-    @abstractmethod
     @property
     def max_shots_per_run(self) -> int:
         pass
 
-    @abstractmethod
     @property
     def availability(self) -> BackendAvailability:
         pass

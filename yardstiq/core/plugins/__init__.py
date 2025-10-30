@@ -25,7 +25,7 @@ def provider(name: str) -> Callable:
             print(f"[Yardstiq] WARNING: Provider '{name}' is being redefined.")
 
         try:
-            instance = cls()
+            instance = cls(name)
             instance.name = name
             PROVIDER_REGISTRY[name] = instance
         except Exception as e:
@@ -47,7 +47,7 @@ def backend(name: str) -> Callable:
             raise TypeError(f"Class {cls.__name__} must inherit from Backend")
 
         localp: LocalProvider = PROVIDER_REGISTRY["local"]
-        localp.add_backend(cls(), name)
+        localp.add_backend(cls(localp, name, "0.1"), name)
 
         return cls
 
@@ -65,7 +65,7 @@ def benchmark(name: str) -> Callable:
             raise TypeError(f"Class {cls.__name__} must inherit from Benchmark")
 
         localp: LocalProvider = PROVIDER_REGISTRY["local"]
-        localp.add_benchmark(cls(), name)
+        localp.add_benchmark(cls(localp, name, "0.1"), name)
 
         return cls
 
@@ -83,7 +83,7 @@ def dataset(name: str) -> Callable:
             raise TypeError(f"Class {cls.__name__} must inherit from Dataset")
 
         localp: LocalProvider = PROVIDER_REGISTRY["local"]
-        localp.add_dataset(cls(), name)
+        localp.add_dataset(cls(localp, name, "0.1"), name)
 
         return cls
 
