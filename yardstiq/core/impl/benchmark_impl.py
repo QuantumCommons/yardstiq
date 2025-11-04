@@ -114,8 +114,12 @@ def run_benchmark(
         dataset = _get_dataset(dataset_name)
         dataset.load(kwargs)
 
-    model = benchmark.build_model(dataset=dataset)
-    results = backend.run(model=model, shots=kwargs.get("shots", 1024))
-    score = benchmark.score(results)
+    try:
+        backend.allocate()
+        model = benchmark.build_program(dataset=dataset)
+        results = backend.run(model=model, shots=kwargs.get("shots", 1024))
+        score = benchmark.score(results)
+    finally:
+        backend.deallocate()
 
     return score
