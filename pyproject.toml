@@ -33,3 +33,5 @@ Repository = "https://github.com/QuantumCommons/yardstiq"
 
 [tool.setuptools.package-data]
 yardstiq = ["data/known_providers.json"]
+
+[tool.setuptools_scm]

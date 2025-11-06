@@ -23,11 +23,11 @@ jobs:
     - name: Get version from setup.py
       id: version
       run: |
-        version=$(python3 setup.py --version)
+        version=$(python -m setuptools_scm)
         echo "version=$version" >> $GITHUB_ENV
 
     - name: Build package
-      run: python setup.py sdist bdist_wheel
+      run: python -m build
 
     - name: Install package
       run: pip install dist/yardstiq-${version}-py3-none-any.whl
